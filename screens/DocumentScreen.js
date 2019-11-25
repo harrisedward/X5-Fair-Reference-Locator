@@ -54,7 +54,7 @@ export default class LinksScreen extends React.Component {
   	var test = hasLoaded ? response.oer_materials[0] : null;
   
   	return (
-    	 <React.Fragment>
+    	 <View style={styles.container}>
     		<StatusBar backgroundColor={'red'} barStyle={'dark-content'} translucent={false} />
         {hasLoaded ? (
           <React.Fragment>
@@ -66,7 +66,7 @@ export default class LinksScreen extends React.Component {
         ) : (
           <Text style={styles.baseText}>loading...</Text>
         )}
-      </React.Fragment>
+      </View>
   	);
   }
 }
@@ -79,4 +79,10 @@ const styles = StyleSheet.create({
   baseText: {
     color: '#000'
   },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
