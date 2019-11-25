@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, StyleSheet, StatusBar } from 'react-native';
+import { Text, StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 
 
-export default class LinksScreen extends React.Component {
+export default class DocumentsScreen extends React.Component {
 	
   constructor(props) {
   	super(props)
@@ -54,9 +54,8 @@ export default class LinksScreen extends React.Component {
   	var test = hasLoaded ? response.oer_materials[0] : null;
   
   	return (
-    	 <React.Fragment>
-    		<StatusBar backgroundColor={'red'} barStyle={'dark-content'} translucent={false} />
-        {hasLoaded ? (
+    	 <View style={styles.container}>
+    		{hasLoaded ? (
           <React.Fragment>
             <Text style={styles.baseText}>creation date:</Text>
             <Text style={styles.baseText}>{test.creation_date}</Text>
@@ -66,17 +65,27 @@ export default class LinksScreen extends React.Component {
         ) : (
           <Text style={styles.baseText}>loading...</Text>
         )}
-      </React.Fragment>
+      </View>
   	);
   }
 }
 
-LinksScreen.navigationOptions = {
-  title: 'Links',
+DocumentsScreen.navigationOptions = {
+  title: 'Docs',
+  tabBarLabel: 'Docs',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+  ),
 };
 
 const styles = StyleSheet.create({
   baseText: {
     color: '#000'
   },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
