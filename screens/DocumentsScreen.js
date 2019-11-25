@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 import moment from 'moment';
 
-export default class LinksScreen extends React.Component {
+export default class DocumentsScreen extends React.Component {
 	
   constructor(props) {
   	super(props)
@@ -57,10 +57,13 @@ export default class LinksScreen extends React.Component {
 
   render() {
   	const { response, hasLoaded  } = this.state
+
     var test = hasLoaded ? response.oer_materials[0] : null;
+    
     if(hasLoaded) {
-    var newDate = moment(Date(test.creation_date)).format('DD-MM-YYYY');
+      var newDate = moment(Date(test.creation_date)).format('DD-MM-YYYY');
     }
+
     return (
       <View style={styles.container}>
         {!hasLoaded ? (
@@ -82,8 +85,13 @@ export default class LinksScreen extends React.Component {
     );
   } 
 }
-LinksScreen.navigationOptions = {
-  title: 'Links',
+
+DocumentsScreen.navigationOptions = {
+  title: 'Docs',
+  tabBarLabel: 'Docs',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+  ),
 };
 
 const styles = StyleSheet.create({
