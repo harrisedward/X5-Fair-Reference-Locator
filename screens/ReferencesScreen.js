@@ -22,6 +22,10 @@ export default class ReferencesScreen extends React.Component {
 
 ReferencesScreen.navigationOptions = {
   title: 'Refs',
+  tabBarLabel: 'Refs',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
 };
 
 const styles = StyleSheet.create({

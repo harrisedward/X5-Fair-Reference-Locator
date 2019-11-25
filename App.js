@@ -5,25 +5,10 @@ import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import ReferencesScreen from './screens/ReferencesScreen.js'
-import DocumentsScreen from './screens/DocumentsScreen.js'
-
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import AppNavigator from './navigation/AppNavigator';
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
-  const bottomTabNavigator = createBottomTabNavigator(
-    {
-      Documents: DocumentsScreen,
-      References: ReferencesScreen,
-    },
-    {
-      initialRouteName: 'Documents'
-    }
-  );
-
-  const AppContainer = createAppContainer(bottomTabNavigator);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
@@ -36,7 +21,8 @@ export default function App(props) {
   } else {
     return (
       <View style={styles.container}>
-        <AppContainer />
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <AppNavigator />
       </View>
     );
   }

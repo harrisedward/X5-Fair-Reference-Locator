@@ -72,6 +72,10 @@ export default class DocumentsScreen extends React.Component {
 
 DocumentsScreen.navigationOptions = {
   title: 'Docs',
+  tabBarLabel: 'Docs',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+  ),
 };
 
 const styles = StyleSheet.create({
