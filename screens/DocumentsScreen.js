@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, StyleSheet, StatusBar } from 'react-native';
+import { Text, StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 
 
-export default class LinksScreen extends React.Component {
+export default class DocumentsScreen extends React.Component {
 	
   constructor(props) {
   	super(props)
@@ -55,8 +55,7 @@ export default class LinksScreen extends React.Component {
   
   	return (
     	 <View style={styles.container}>
-    		<StatusBar backgroundColor={'red'} barStyle={'dark-content'} translucent={false} />
-        {hasLoaded ? (
+    		{hasLoaded ? (
           <React.Fragment>
             <Text style={styles.baseText}>creation date:</Text>
             <Text style={styles.baseText}>{test.creation_date}</Text>
@@ -71,8 +70,8 @@ export default class LinksScreen extends React.Component {
   }
 }
 
-LinksScreen.navigationOptions = {
-  title: 'Links',
+DocumentsScreen.navigationOptions = {
+  title: 'Docs',
 };
 
 const styles = StyleSheet.create({

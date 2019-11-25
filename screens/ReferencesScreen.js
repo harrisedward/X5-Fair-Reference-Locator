@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, StatusBar } from 'react-native';
+import { Text, StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 
@@ -19,3 +19,19 @@ export default class ReferencesScreen extends React.Component {
   }
 
 }
+
+ReferencesScreen.navigationOptions = {
+  title: 'Refs',
+};
+
+const styles = StyleSheet.create({
+  baseText: {
+    color: '#000'
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});

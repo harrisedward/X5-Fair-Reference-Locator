@@ -4,12 +4,26 @@ import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import DocumentScreen from './screens/DocumentScreen.js'
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+
+import ReferencesScreen from './screens/ReferencesScreen.js'
+import DocumentsScreen from './screens/DocumentsScreen.js'
+
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
+
+  const bottomTabNavigator = createBottomTabNavigator(
+    {
+      Documents: DocumentsScreen,
+      References: ReferencesScreen,
+    },
+    {
+      initialRouteName: 'Documents'
+    }
+  );
+
+  const AppContainer = createAppContainer(bottomTabNavigator);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
@@ -22,7 +36,7 @@ export default function App(props) {
   } else {
     return (
       <View style={styles.container}>
-        <DocumentScreen />
+        <AppContainer />
       </View>
     );
   }
