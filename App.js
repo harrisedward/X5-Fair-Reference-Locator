@@ -4,7 +4,7 @@ import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import DocumentScreen from './screen/DocumentScreen.js'
+import DocumentScreen from './screens/DocumentScreen.js'
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
