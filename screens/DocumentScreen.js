@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
-import React, { Component } from 'react';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
 
@@ -52,8 +51,7 @@ export default class LinksScreen extends React.Component {
 
   async componentWillMount() {
     await Expo.Font.loadAsync({
-      'Roboto': require('native-base/Fonts/Roboto.ttf'),
-      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+      'Mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
     });
   }
 
@@ -63,7 +61,7 @@ export default class LinksScreen extends React.Component {
     	
     return (
       <View style={styles.container}>
-        {hasLoaded ? (
+        {!hasLoaded ? (
           <Text styles={styles.baseText}>Loading...</Text>   
         ) : (
       		<Card>
