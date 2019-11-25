@@ -3,7 +3,7 @@ import { StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
-
+import moment from 'moment';
 
 export default class LinksScreen extends React.Component {
 	
@@ -58,7 +58,9 @@ export default class LinksScreen extends React.Component {
   render() {
   	const { response, hasLoaded  } = this.state
     var test = hasLoaded ? response.oer_materials[0] : null;
-    	
+    if(hasLoaded) {
+    var newDate = moment(Date(test.creation_date)).format('DD-MM-YYYY');
+    }
     return (
       <View style={styles.container}>
         {!hasLoaded ? (
@@ -69,10 +71,10 @@ export default class LinksScreen extends React.Component {
           			<Text>{test.title}</Text>
         		</CardItem>
         	  <CardItem>
-              	<Text numberOfLines={1} style={{ width: 100 }}>{test.description}</Text>		
+              	<Text numberOfLines={4} style={{ width: 310 }}>{test.description}</Text>		
             </CardItem>
             <CardItem footer>
-              <Text>{test.creation_date}</Text>
+              <Text>{newDate}</Text>
             </CardItem>
           </Card>
         )}
