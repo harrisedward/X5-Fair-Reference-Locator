@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
-
+import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
+import moment from 'moment';
 
 export default class DocumentsScreen extends React.Component {
 	
@@ -48,26 +49,41 @@ export default class DocumentsScreen extends React.Component {
   		})
   }
 
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      'Mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
+    });
+  }
+
   render() {
-  	
   	const { response, hasLoaded  } = this.state
-  	var test = hasLoaded ? response.oer_materials[0] : null;
-  
-  	return (
-    	 <View style={styles.container}>
-    		{hasLoaded ? (
-          <React.Fragment>
-            <Text style={styles.baseText}>creation date:</Text>
-            <Text style={styles.baseText}>{test.creation_date}</Text>
-            <Text style={styles.baseText}>description</Text>
-            <Text style={styles.baseText}>{test.description}</Text>
-          </React.Fragment>
+
+    var test = hasLoaded ? response.oer_materials[0] : null;
+    
+    if(hasLoaded) {
+      var newDate = moment(Date(test.creation_date)).format('DD-MM-YYYY');
+    }
+
+    return (
+      <View style={styles.container}>
+        {!hasLoaded ? (
+          <Text styles={styles.baseText}>Loading...</Text>   
         ) : (
-          <Text style={styles.baseText}>loading...</Text>
+      		<Card>
+        		<CardItem header>
+          			<Text>{test.title}</Text>
+        		</CardItem>
+        	  <CardItem>
+              	<Text numberOfLines={4} style={{ width: 310 }}>{test.description}</Text>		
+            </CardItem>
+            <CardItem footer>
+              <Text>{newDate}</Text>
+            </CardItem>
+          </Card>
         )}
       </View>
-  	);
-  }
+    );
+  } 
 }
 
 DocumentsScreen.navigationOptions = {
