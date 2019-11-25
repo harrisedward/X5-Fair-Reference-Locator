@@ -50,44 +50,37 @@ export default class LinksScreen extends React.Component {
   		})
   }
 
-async componentWillMount() {
-  await Expo.Font.loadAsync({
-    'Roboto': require('native-base/Fonts/Roboto.ttf'),
-    'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-  });
-}
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    });
+  }
 
-export deafult class CardHeaderExample extends Component {
-	const { response, hasLoaded  } = this.state
-  	var test = hasLoaded ? response.oer_materials[0] : null;
-  
   render() {
-  
-  const { response, hasLoaded  } = this.state
-  	var test = hasLoaded ? response.oer_materials[0] : null;
-  	
+  	const { response, hasLoaded  } = this.state
+    var test = hasLoaded ? response.oer_materials[0] : null;
+    	
     return (
-		<Header />
-        	<Content>
-          		<Card>
-            		<CardItem header>
-              			<Text>{test.header}</Text>
-            		</CardItem>
-            	<CardItem>
-              		<Body>
-                		<Text>
-                  	<Text numberOfLines={1} style={{ width: 100 }}>{test.description}<Text>		
-                </Text>
-              </Body>
+      <View style={styles.container}>
+        {hasLoaded ? (
+          <Text styles={styles.baseText}>Loading...</Text>   
+        ) : (
+      		<Card>
+        		<CardItem header>
+          			<Text>{test.title}</Text>
+        		</CardItem>
+        	  <CardItem>
+              	<Text numberOfLines={1} style={{ width: 100 }}>{test.description}</Text>		
             </CardItem>
             <CardItem footer>
               <Text>{test.creation_date}</Text>
             </CardItem>
-         </Card>
-        </Content>
-    </Container>
+          </Card>
+        )}
+      </View>
     );
-   } 
+  } 
 }
 LinksScreen.navigationOptions = {
   title: 'Links',
@@ -97,4 +90,10 @@ const styles = StyleSheet.create({
   baseText: {
     color: '#000'
   },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
