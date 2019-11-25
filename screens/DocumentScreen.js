@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, StatusBar } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 
@@ -55,7 +55,8 @@ export default class LinksScreen extends React.Component {
   
   	return (
     	 <React.Fragment>
-    		{hasLoaded ? (
+    		<StatusBar backgroundColor={'red'} barStyle={'dark-content'} translucent={false} />
+        {hasLoaded ? (
           <React.Fragment>
             <Text style={styles.baseText}>creation date:</Text>
             <Text style={styles.baseText}>{test.creation_date}</Text>
