@@ -15,7 +15,8 @@ class DocumentsScreen extends React.Component {
   	
   	// Bind our functions
   	this.getDocuments = this.getDocuments.bind(this)
-    this.toggleReference = this.toggleReference.bind(this)
+  	
+  	this.openDocument = this.openDocument.bind(this)
   	
   	this.state = {
       hasLoaded: false,
@@ -52,19 +53,15 @@ class DocumentsScreen extends React.Component {
   		})
   }
 
-  toggleReference(index) {
-    console.log("Add reference: " + index)
-
-    const { response } = this.state
-    let article = response.oer_materials[index]
-
-    let ref = {
-      title: article.title
-    }
-
-    this.props.addReference(ref);
+  openDocument(index){
+    console.log("Running...")
+    const { response  } = this.state
+    
+	this.props.navigation.navigate('Articles', {
+		doc: response.oer_materials[index]
+	})
   }
-
+	
   async componentWillMount() {
     await Expo.Font.loadAsync({
       'Mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -86,7 +83,7 @@ class DocumentsScreen extends React.Component {
       		 var newDate = moment(Date(article.creation_date)).format('DD-MM-YYYY');
       		 
       		 return (
-      		 <TouchableOpacity onPress={ () => {this.toggleReference(i)} }>
+      		 <TouchableOpacity onPress={ () => {this.openDocument(i)} }>
              <Card>
           		<CardItem header>
             			<Text>{article.title}</Text>
