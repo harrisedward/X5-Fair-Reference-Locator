@@ -73,7 +73,9 @@ ReferencesScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   baseText: {
-    color: '#000'
+    color: '#000',
+    paddingTop: 10,
+    paddingBottom: 10
   },
   headerText: {
     fontSize: 20,
@@ -82,10 +84,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: '#fff',
     alignItems: 'flex-start',
     justifyContent: 'flex-start'
-  }
+  },
 });
 
 const mapStateToProps = (state) => ({
