@@ -9,9 +9,10 @@ import * as referenceAction from '../actions/referenceAction';
 class ReferencesScreen extends React.Component {
 	
   reference(ref, index) {
+    console.log("rendering reference: " + ref);
     return (
       <Text> 
-        Title: {ref.ref.title} 
+        Title: {ref.title} 
       </Text>
     )
   }
@@ -21,11 +22,16 @@ class ReferencesScreen extends React.Component {
   }
 
   render() {
+
+    const { references } = this.props;
+    
+    isReferences = references.length > 0
+
   	return (
   		<View style={styles.container}>
-        {this.props.references.len > 0 ? (
+        {isReferences ? (
           <React.Fragment>
-  			   {this.props.references.map((reference, i) => this.reference(reference, i))}
+  			   {references.map((reference, i) => this.reference(reference, i))}
           </React.Fragment>
         ) : (
           <Text>No references added yet</Text>
@@ -56,17 +62,13 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    references: state.references
-  }
-};
+const mapStateToProps = (state) => ({
+    references: state.references,
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addReference: ref => dispatch(referenceAction.addReference(ref))
-  }
-};
+const mapDispatchToProps = (dispatch) => ({
+  addReference: ref => dispatch(referenceAction.addReference(ref)),
+})
 
 export default connect(
   mapStateToProps,

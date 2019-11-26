@@ -40,7 +40,7 @@ class DocumentsScreen extends React.Component {
   		.then(res => {
   			const documents = res.data;
   			
-        console.log(documents)
+        // console.log(documents)
 
   			this.setState({
           hasLoaded: true,
