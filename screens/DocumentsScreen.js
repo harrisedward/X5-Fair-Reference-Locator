@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View, TouchableOpacity} from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
@@ -15,6 +15,7 @@ class DocumentsScreen extends React.Component {
   	
   	// Bind our functions
   	this.getDocuments = this.getDocuments.bind(this)
+    this.toggleReference = this.toggleReference.bind(this)
   	
   	this.state = {
       hasLoaded: false,
@@ -52,6 +53,8 @@ class DocumentsScreen extends React.Component {
   }
 
   toggleReference(index) {
+    console.log("Add reference: " + index)
+
     const { response } = this.state
     let article = response.oer_materials[index]
 
@@ -59,7 +62,7 @@ class DocumentsScreen extends React.Component {
       title: article.title
     }
 
-    this.props.createContact(ref);
+    this.props.addReference(ref);
   }
 
   async componentWillMount() {
@@ -82,17 +85,19 @@ class DocumentsScreen extends React.Component {
         {!hasLoaded ? (
           <Text styles={styles.baseText}>Loading...</Text>   
         ) : (
-      		<Card onClick={ () => {this.toggleReference(0)} }>
-        		<CardItem header>
-          			<Text>{test.title}</Text>
-        		</CardItem>
-        	  <CardItem>
-              	<Text numberOfLines={4} style={{ width: 310 }}>{test.description}</Text>		
-            </CardItem>
-            <CardItem footer>
-              <Text>{newDate}</Text>
-            </CardItem>
-          </Card>
+          <TouchableOpacity onPress={ () => {this.toggleReference(0)} }>
+        		<Card>
+          		<CardItem header>
+            			<Text>{test.title}</Text>
+          		</CardItem>
+          	  <CardItem>
+                	<Text numberOfLines={4} style={{ width: 310 }}>{test.description}</Text>		
+              </CardItem>
+              <CardItem footer>
+                <Text>{newDate}</Text>
+              </CardItem>
+            </Card>
+          </TouchableOpacity>
         )}
       </View>
     );

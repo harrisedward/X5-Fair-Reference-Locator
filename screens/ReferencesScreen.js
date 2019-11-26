@@ -11,7 +11,7 @@ class ReferencesScreen extends React.Component {
   reference(ref, index) {
     return (
       <Text> 
-        {ref.title} 
+        Title: {ref.ref.title} 
       </Text>
     )
   }
@@ -23,7 +23,13 @@ class ReferencesScreen extends React.Component {
   render() {
   	return (
   		<View style={styles.container}>
-  			{this.props.references.map((reference, i) => this.reference(contact, i))}
+        {this.props.references.len > 0 ? (
+          <React.Fragment>
+  			   {this.props.references.map((reference, i) => this.reference(reference, i))}
+          </React.Fragment>
+        ) : (
+          <Text>No references added yet</Text>
+        )}
   		</View>
   	);
   }
