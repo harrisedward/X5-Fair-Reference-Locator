@@ -3,7 +3,9 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
+
 import DocumentsScreen from '../screens/DocumentsScreen';
+import ArticlesScreen from '../screens/ArticlesScreen';
 import ReferencesScreen from '../screens/ReferencesScreen';
 
 const config = Platform.select({
@@ -14,6 +16,7 @@ const config = Platform.select({
 const DocumentsStack = createStackNavigator(
   {
     Docs: DocumentsScreen,
+    Articles: ArticlesScreen
   },
   config
 );
@@ -49,8 +52,8 @@ ReferencesStack.navigationOptions = {
 ReferencesStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  DocumentsStack,
-  ReferencesStack
+  DocumentsStack: {screen: DocumentsStack},
+  ReferencesStack: {screen: ReferencesStack}
 });
 
 tabNavigator.path = '';
