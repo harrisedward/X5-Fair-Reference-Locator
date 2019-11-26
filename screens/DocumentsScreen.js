@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { ScrollView, StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
@@ -58,30 +58,34 @@ export default class DocumentsScreen extends React.Component {
   render() {
   	const { response, hasLoaded  } = this.state
 
-    var test = hasLoaded ? response.oer_materials[0] : null;
+    var articles = hasLoaded ? response.oer_materials : [];
     
-    if(hasLoaded) {
-      var newDate = moment(Date(test.creation_date)).format('DD-MM-YYYY');
-    }
-
     return (
-      <View style={styles.container}>
+      <ScrollView>
         {!hasLoaded ? (
           <Text styles={styles.baseText}>Loading...</Text>   
         ) : (
-      		<Card>
+    	  <React.Fragment>
+      		{ articles.map((article, i) => {
+      		 var newDate = moment(Date(article.creation_date)).format('DD-MM-YYYY');
+      		 
+      		 return (
+      		 <Card>
         		<CardItem header>
-          			<Text>{test.title}</Text>
+          			<Text>{article.title}</Text>
         		</CardItem>
-        	  <CardItem>
-              	<Text numberOfLines={4} style={{ width: 310 }}>{test.description}</Text>		
-            </CardItem>
-            <CardItem footer>
-              <Text>{newDate}</Text>
-            </CardItem>
-          </Card>
+        	    <CardItem>
+              	  <Text numberOfLines={4} style={{ width: 310 }}>{article.description}</Text>		
+            	</CardItem>
+              	<CardItem footer>
+                	<Text>{newDate}</Text>
+            	</CardItem>
+          	 </Card>
+          	 )
+      		})}
+      	   </React.Fragment>
         )}
-      </View>
+      </ScrollView>
     );
   } 
 }
