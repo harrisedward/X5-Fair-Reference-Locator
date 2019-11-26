@@ -74,11 +74,13 @@ class DocumentsScreen extends React.Component {
     var articles = hasLoaded ? response.oer_materials : [];
     
     return (
-      <ScrollView>
+        <React.Fragment>
         {!hasLoaded ? (
-          <Text styles={styles.baseText}>Loading...</Text>   
+          <View style={styles.centerContainer}>
+            <Text styles={styles.baseText}>Loading...</Text>   
+          </View>
         ) : (
-    	  <React.Fragment>
+        <ScrollView style={styles.container}>
       		{ articles.map((article, i) => {
       		 var newDate = moment(Date(article.creation_date)).format('DD-MM-YYYY');
       		 
@@ -98,9 +100,9 @@ class DocumentsScreen extends React.Component {
              </TouchableOpacity>
           	 )
       		})}
-      	</React.Fragment>
+          </ScrollView>
         )}
-      </ScrollView>
+      	</React.Fragment>
     );
   } 
 }
@@ -119,10 +121,16 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
+  },
+  centerContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
+  },
 });
 
 const mapStateToProps = (state, ownProps) => {

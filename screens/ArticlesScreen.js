@@ -46,7 +46,7 @@ class ArticlesScreen extends React.Component {
   	var newDate = moment(Date(doc.creation_date)).format('DD-MM-YYYY');
   
   	return (
-  		 <ScrollView>
+  		 <ScrollView style={styles.container}>
              <Card>
           		  <CardItem header>
             			<Text style={styles.headerText}>{doc.title}</Text>
@@ -84,9 +84,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    padding: 20,
+    marginTop: 20,
+    margin: 20,
     backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
   }
 });
 
