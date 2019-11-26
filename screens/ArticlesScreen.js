@@ -24,9 +24,15 @@ class ArticlesScreen extends React.Component {
     const { navigation } = this.props
     
     const article = navigation.getParam('doc', {})
+    var todaysDate = moment(Date(article.creation_date)).format('DD-MM-YYYY');
 
     let ref = {
-      title: article.title
+      author: "N/A",
+      initials: "Wikipedia",
+      title: article.title,
+      website_name: article.provider.provider_name,
+      date: todaysDate,
+      URL: article.url
     }
 
     this.props.addReference(ref);
