@@ -1,17 +1,21 @@
 import React from 'react';
-import { ScrollView, StyleSheet, StatusBar, View } from 'react-native';
+import { ScrollView, StyleSheet, StatusBar, View, TouchableOpacity} from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 import moment from 'moment';
 
-export default class DocumentsScreen extends React.Component {
+import { connect } from 'react-redux';
+import * as referenceAction from '../actions/referenceAction';
+
+class DocumentsScreen extends React.Component {
 	
   constructor(props) {
   	super(props)
   	
   	// Bind our functions
   	this.getDocuments = this.getDocuments.bind(this)
+    this.toggleReference = this.toggleReference.bind(this)
   	
   	this.state = {
       hasLoaded: false,
@@ -22,7 +26,6 @@ export default class DocumentsScreen extends React.Component {
   }
 
   getDocuments() {
-  	// TODO Query logic
   	const PLATFORM_URL = "https://platform.x5gon.org/api/v1"
   	const ENDPOINT = "/oer_materials"
   	const url = PLATFORM_URL + ENDPOINT
@@ -37,7 +40,7 @@ export default class DocumentsScreen extends React.Component {
   		.then(res => {
   			const documents = res.data;
   			
-        console.log(documents)
+        // console.log(documents)
 
   			this.setState({
           hasLoaded: true,
@@ -47,6 +50,19 @@ export default class DocumentsScreen extends React.Component {
   		.catch(error => {
   			console.log(error);
   		})
+  }
+
+  toggleReference(index) {
+    console.log("Add reference: " + index)
+
+    const { response } = this.state
+    let article = response.oer_materials[index]
+
+    let ref = {
+      title: article.title
+    }
+
+    this.props.addReference(ref);
   }
 
   async componentWillMount() {
@@ -70,20 +86,22 @@ export default class DocumentsScreen extends React.Component {
       		 var newDate = moment(Date(article.creation_date)).format('DD-MM-YYYY');
       		 
       		 return (
-      		 <Card>
-        		<CardItem header>
-          			<Text>{article.title}</Text>
-        		</CardItem>
-        	    <CardItem>
-              	  <Text numberOfLines={4} style={{ width: 310 }}>{article.description}</Text>		
-            	</CardItem>
-              	<CardItem footer>
-                	<Text>{newDate}</Text>
-            	</CardItem>
-          	 </Card>
+      		 <TouchableOpacity onPress={ () => {this.toggleReference(i)} }>
+             <Card>
+          		<CardItem header>
+            			<Text>{article.title}</Text>
+          		</CardItem>
+          	    <CardItem>
+                	  <Text numberOfLines={4} style={{ width: 310 }}>{article.description}</Text>		
+              	</CardItem>
+                	<CardItem footer>
+                  	<Text>{newDate}</Text>
+              	</CardItem>
+            	 </Card>
+             </TouchableOpacity>
           	 )
       		})}
-      	   </React.Fragment>
+      	</React.Fragment>
         )}
       </ScrollView>
     );
@@ -109,3 +127,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    references: state.references
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addReference: ref => dispatch(referenceAction.addReference(ref))
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DocumentsScreen)
