@@ -1,7 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet, StatusBar, View } from 'react-native';
+import { ScrollView, Text, StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
+import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
+import moment from 'moment';
+
+
 
 import { connect } from 'react-redux';
 import * as referenceAction from '../actions/referenceAction';
@@ -32,13 +36,25 @@ class ArticlesScreen extends React.Component {
   	const { navigation } = this.props
   	
   	const doc = navigation.getParam('doc', {})
+  	var newDate = moment(Date(doc.creation_date)).format('DD-MM-YYYY');
+
   
   	return (
-  		<View style={styles.container}>
-          <Text>{doc.title}</Text>
-  		</View>
-  	)
-  }
+  		 <ScrollView>
+             <Card>
+          		<CardItem header>
+            			<Text>{doc.title}</Text>
+          		</CardItem>
+          	    <CardItem>
+                	  <Text numberOfLines={30} style={{ width: 310 }}>{doc.description}</Text>		
+              	</CardItem>
+                	<CardItem footer>
+                  	<Text>{newDate}</Text>
+              	</CardItem>
+             </Card>
+      </ScrollView>
+            )
+	}
 }
 
 ArticlesScreen.navigationOptions = {
@@ -52,8 +68,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
   }
 });
 
