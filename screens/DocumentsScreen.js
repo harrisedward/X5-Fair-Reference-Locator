@@ -27,11 +27,13 @@ class DocumentsScreen extends React.Component {
 
   getDocuments() {
   	const PLATFORM_URL = "https://platform.x5gon.org/api/v1"
-  	const ENDPOINT = "/oer_materials"
+  	const ENDPOINT = "/search"
   	const url = PLATFORM_URL + ENDPOINT
 
   	params = {
+        "text": "Machine Learning",
       	"languages": ["en"], 
+        "type": "text",
       	"limit": 10, 
       	"page": 1
   	}
