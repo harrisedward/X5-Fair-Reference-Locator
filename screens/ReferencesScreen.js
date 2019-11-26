@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, StatusBar, View } from 'react-native';
+import { Clipboard, Button, Text, StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 
@@ -20,6 +20,8 @@ class ReferencesScreen extends React.Component {
 
   constructor(props) {
   	super(props)
+  	
+  	this.writeToClipboard=this.writeToClipboard.bind(this)
   }
 
   render() {
@@ -40,9 +42,24 @@ class ReferencesScreen extends React.Component {
         ) : (
           <Text>No references added yet</Text>
         )}
+        
+        <Button
+        	onPress={this.writeToClipboard}
+        	title="Write to Clipboard"
+        />
   		</View>
   	);
   }
+
+	async writeToClipboard(){
+	  const { references } = this.props;
+	  var content = ""
+	  references.forEach (ref => {
+	  	content += ref.author + ", " + ref.initials + ", " + ref.title + ", " + ref.website_name + ", " + ref.date + ". Available from: " + ref.URL
+	  	content += " /////////////////////// "
+	  })
+	  await Clipboard.setString(content);
+	}
 
 }
 
