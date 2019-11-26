@@ -11,9 +11,10 @@ class ReferencesScreen extends React.Component {
   reference(ref, index) {
     console.log("rendering reference: " + ref);
     return (
-      <Text> 
-        Title: {ref.title} 
-      </Text>
+      <React.Fragment>
+        <Text> {ref.author + ", " + ref.initials + ", " + ref.title + ", " + ref.website_name + ", " + ref.date + ". Available from: " + ref.URL} </Text>
+        <Text> </Text>
+      </React.Fragment>
     )
   }
 
@@ -29,6 +30,9 @@ class ReferencesScreen extends React.Component {
 
   	return (
   		<View style={styles.container}>
+        <Text style={styles.headerText}>
+          Your references
+        </Text>
         {isReferences ? (
           <React.Fragment>
   			   {references.map((reference, i) => this.reference(reference, i))}
@@ -54,11 +58,16 @@ const styles = StyleSheet.create({
   baseText: {
     color: '#000'
   },
+  headerText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline' 
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
   }
 });
 
