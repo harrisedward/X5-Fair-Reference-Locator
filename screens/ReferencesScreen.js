@@ -3,9 +3,19 @@ import { Text, StyleSheet, StatusBar, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import axios from 'axios';
 
+import { connect } from 'react-redux';
+import * as referenceAction from '../actions/referenceAction';
 
-export default class ReferencesScreen extends React.Component {
+class ReferencesScreen extends React.Component {
 	
+  reference(ref, index) {
+    return (
+      <Text> 
+        {ref.title} 
+      </Text>
+    )
+  }
+
   constructor(props) {
   	super(props)
   }
@@ -13,7 +23,7 @@ export default class ReferencesScreen extends React.Component {
   render() {
   	return (
   		<View style={styles.container}>
-  			<Text style={styles.baseText}>Need to create...</Text>
+  			{this.props.references.map((reference, i) => this.reference(contact, i))}
   		</View>
   	);
   }
@@ -39,3 +49,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    references: state.references
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addReference: ref => dispatch(referenceAction.addReference(ref))
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ReferencesScreen)

@@ -5,7 +5,10 @@ import axios from 'axios';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 import moment from 'moment';
 
-export default class DocumentsScreen extends React.Component {
+import { connect } from 'react-redux';
+import * as referenceAction from '../actions/referenceAction';
+
+class DocumentsScreen extends React.Component {
 	
   constructor(props) {
   	super(props)
@@ -22,7 +25,6 @@ export default class DocumentsScreen extends React.Component {
   }
 
   getDocuments() {
-  	// TODO Query logic
   	const PLATFORM_URL = "https://platform.x5gon.org/api/v1"
   	const ENDPOINT = "/oer_materials"
   	const url = PLATFORM_URL + ENDPOINT
@@ -49,6 +51,17 @@ export default class DocumentsScreen extends React.Component {
   		})
   }
 
+  toggleReference(index) {
+    const { response } = this.state
+    let article = response.oer_materials[index]
+
+    let ref = {
+      title: article.title
+    }
+
+    this.props.createContact(ref);
+  }
+
   async componentWillMount() {
     await Expo.Font.loadAsync({
       'Mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -69,7 +82,7 @@ export default class DocumentsScreen extends React.Component {
         {!hasLoaded ? (
           <Text styles={styles.baseText}>Loading...</Text>   
         ) : (
-      		<Card>
+      		<Card onClick={ () => {this.toggleReference(0)} }>
         		<CardItem header>
           			<Text>{test.title}</Text>
         		</CardItem>
@@ -105,3 +118,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    references: state.references
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addReference: ref => dispatch(referenceAction.addReference(ref))
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DocumentsScreen)
