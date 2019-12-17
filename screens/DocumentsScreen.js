@@ -8,26 +8,25 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import * as referenceAction from '../actions/referenceAction';
 
-class DocumentsScreen extends React.Component {
+class articlesScreen extends React.Component {
 	
   constructor(props) {
   	super(props)
   	
   	// Bind our functions
-  	this.getDocuments = this.getDocuments.bind(this)
-  	
+  	this.getArticles = this.getArticles.bind(this)
   	this.openDocument = this.openDocument.bind(this)
   	
   	this.state = {
       hasLoaded: false,
   		response: {},
-      documents: [],
+      articles: [],
   	}
 
-    this.getDocuments();
+    this.getArticles();
   }
 
-  getDocuments() {
+  getArticles() {
   	const PLATFORM_URL = "https://platform.x5gon.org/api/v1"
   	const ENDPOINT = "/search"
   	const url = PLATFORM_URL + ENDPOINT
@@ -40,13 +39,13 @@ class DocumentsScreen extends React.Component {
       }
     })
   		.then(res => {
-  			const documents = res.data.rec_materials;
+  			const articles = res.data.rec_materials;
   			
-        console.log(documents)
+        console.log(articles)
 
   			this.setState({
           hasLoaded: true,
-  				documents: documents
+  				articles: articles
   			})
   		})
   		.catch(error => {
@@ -54,12 +53,12 @@ class DocumentsScreen extends React.Component {
   		})
   }
 
-  openDocument(index){
+  openDocument(material_id) {
     console.log("Running...")
-    const { documents  } = this.state
+    const { articles  } = this.state
     
   	this.props.navigation.navigate('Articles', {
-  		doc: documents[index]
+  		material_id: material_id,
   	})
   }
 	
@@ -70,10 +69,8 @@ class DocumentsScreen extends React.Component {
   }
 
   render() {
-  	const { documents, hasLoaded  } = this.state
+  	const { articles, hasLoaded  } = this.state
 
-    var articles = hasLoaded ? documents : [];
-    
     return (
         <>
         {!hasLoaded ? (
@@ -81,34 +78,32 @@ class DocumentsScreen extends React.Component {
             <Text styles={styles.baseText}>Loading...</Text>   
           </View>
         ) : (
-          <View style={styles.centerContainer}>
-            <ScrollView contentContainerStyle={styles.container}>
-          		{ articles.map((article, i) => {
-          		  return ( 
-                  <TouchableOpacity onPress={ () => {this.openDocument(i)} } style={styles.card}>
-                    <Card style={styles.card}>
-                  		<CardItem style={styles.header}>
-                  			<Body>
-                          <Text style>{article.title}</Text>
-                          <Text note>{article.provider}</Text>
-                        </Body>
-                  		</CardItem>
-                      <CardItem style={styles.curvedCardItem}>
-                        	<Text numberOfLines={4} style={styles.description}>{article.description}</Text>    
-                    	</CardItem>
-                  	</Card>
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-          </View>
+          <ScrollView contentContainerStyle={styles.container}>
+        		{ articles.map((article, i) => {
+        		  return ( 
+                <TouchableOpacity onPress={ () => {this.openDocument(article.material_id)} } style={styles.card}>
+                  <Card style={styles.card}>
+                		<CardItem style={styles.header}>
+                			<Body>
+                        <Text>{article.title}</Text>
+                        <Text note>{article.provider}</Text>
+                      </Body>
+                		</CardItem>
+                    <CardItem style={styles.footer}>
+                      	<Text numberOfLines={4} style={styles.description}>{article.description}</Text>    
+                  	</CardItem>
+                	</Card>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
         )}
       	</>
     )
   }
 }
 
-DocumentsScreen.navigationOptions = {
+articlesScreen.navigationOptions = {
   title: 'Docs',
   tabBarLabel: 'Docs',
   tabBarIcon: ({ focused }) => (
@@ -117,13 +112,10 @@ DocumentsScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  baseText: {
-    color: '#000'
-  },
   header: {
     borderRadius: 20,
   },
-  curvedCardItem: {
+  footer: {
     borderRadius: 20,
   },
   card: {
@@ -138,8 +130,11 @@ const styles = StyleSheet.create({
   centerContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  baseText: {
+    color: '#000'
   },
 });
 
@@ -158,4 +153,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DocumentsScreen)
+)(articlesScreen)
