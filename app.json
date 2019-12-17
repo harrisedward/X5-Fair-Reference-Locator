@@ -25,6 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "An easy way to store all your references",
+    "githubUrl": "https://github.com/harrisedward/X5-Fair-Reference-Locator"
   }
 }

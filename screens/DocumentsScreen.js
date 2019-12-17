@@ -20,7 +20,8 @@ class DocumentsScreen extends React.Component {
   	
   	this.state = {
       hasLoaded: false,
-  		response: {}
+  		response: {},
+      documents: [],
   	}
 
     this.getDocuments();
@@ -28,24 +29,24 @@ class DocumentsScreen extends React.Component {
 
   getDocuments() {
   	const PLATFORM_URL = "https://platform.x5gon.org/api/v1"
-  	const ENDPOINT = "/oer_materials"
+  	const ENDPOINT = "/search"
   	const url = PLATFORM_URL + ENDPOINT
-
-  	params = {
-      	"languages": ["en"], 
-      	"limit": 10, 
-      	"page": 1
-  	}
   	
-  	axios.get(url, params)
+  	axios.get(url, {
+      params: {
+        text: "biology",
+        type: "text",
+        page: 1,
+      }
+    })
   		.then(res => {
-  			const documents = res.data;
+  			const documents = res.data.rec_materials;
   			
         console.log(documents)
 
   			this.setState({
           hasLoaded: true,
-  				response: documents
+  				documents: documents
   			})
   		})
   		.catch(error => {
@@ -55,11 +56,11 @@ class DocumentsScreen extends React.Component {
 
   openDocument(index){
     console.log("Running...")
-    const { response  } = this.state
+    const { documents  } = this.state
     
-	this.props.navigation.navigate('Articles', {
-		doc: response.oer_materials[index]
-	})
+  	this.props.navigation.navigate('Articles', {
+  		doc: documents[index]
+  	})
   }
 	
   async componentWillMount() {
@@ -69,42 +70,42 @@ class DocumentsScreen extends React.Component {
   }
 
   render() {
-  	const { response, hasLoaded  } = this.state
+  	const { documents, hasLoaded  } = this.state
 
-    var articles = hasLoaded ? response.oer_materials : [];
+    var articles = hasLoaded ? documents : [];
     
     return (
-        <React.Fragment>
+        <>
         {!hasLoaded ? (
           <View style={styles.centerContainer}>
             <Text styles={styles.baseText}>Loading...</Text>   
           </View>
         ) : (
-        <ScrollView style={styles.container}>
-      		{ articles.map((article, i) => {
-      		 var newDate = moment(Date(article.creation_date)).format('DD-MM-YYYY');
-      		 
-      		 return (
-      		 <TouchableOpacity onPress={ () => {this.openDocument(i)} }>
-             <Card>
-          		<CardItem header>
-            			<Text>{article.title}</Text>
-          		</CardItem>
-          	    <CardItem>
-                	  <Text numberOfLines={4} style={{ width: 310 }}>{article.description}</Text>		
-              	</CardItem>
-                	<CardItem footer>
-                  	<Text>{newDate}</Text>
-              	</CardItem>
-            	 </Card>
-             </TouchableOpacity>
-          	 )
-      		})}
-          </ScrollView>
+          <View style={styles.centerContainer}>
+            <ScrollView contentContainerStyle={styles.container}>
+          		{ articles.map((article, i) => {
+          		  return ( 
+                  <TouchableOpacity onPress={ () => {this.openDocument(i)} } style={styles.card}>
+                    <Card style={styles.card}>
+                  		<CardItem style={styles.header}>
+                  			<Body>
+                          <Text style>{article.title}</Text>
+                          <Text note>{article.provider}</Text>
+                        </Body>
+                  		</CardItem>
+                      <CardItem style={styles.curvedCardItem}>
+                        	<Text numberOfLines={4} style={styles.description}>{article.description}</Text>    
+                    	</CardItem>
+                  	</Card>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
         )}
-      	</React.Fragment>
-    );
-  } 
+      	</>
+    )
+  }
 }
 
 DocumentsScreen.navigationOptions = {
@@ -119,17 +120,26 @@ const styles = StyleSheet.create({
   baseText: {
     color: '#000'
   },
+  header: {
+    borderRadius: 20,
+  },
+  curvedCardItem: {
+    borderRadius: 20,
+  },
+  card: {
+    borderRadius: 20,
+  },
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 20,
+    justifyContent: 'space-between',
     backgroundColor: '#fff',
   },
   centerContainer: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#fff',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
 });
 
